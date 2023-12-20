@@ -1,0 +1,30 @@
+{{> layouts/main}}
+
+{{#contentFor "body"}}
+    <h2>Lista de Productos en Tiempo Real</h2>
+    <ul id="productos-lista">
+
+    </ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+    <script>
+        function actualizarListaProductos(productos) {
+            const listaProductos = document.getElementById('productos-lista');
+
+            listaProductos.innerHTML = '';
+
+            productos.forEach(producto => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${producto.title} - ${producto.price}$`;
+                listaProductos.appendChild(listItem);
+            });
+        }
+
+        const socket = io();
+
+        socket.on('productos', productos => {
+            actualizarListaProductos(productos);
+        });
+    </script>
+{{/contentFor}}
