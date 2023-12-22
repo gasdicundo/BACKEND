@@ -1,21 +1,19 @@
 const express = require('express');
-const http = require('http');
 const socketIO = require('socket.io');
 const exphbs = require('express-handlebars');
 const path = require('path');
 
 const app = express();
-const server = http.createServer(app);
+const server = app.listen(3000, () => {"Servidor escuchando en el puerto 3000"});
 const io = socketIO(server);
 
+app.use(express.static("src/public"))
 
-app.engine('handlebars', exphbs({
-	layoutsDir: path.join("public/views/layouts"),
-	defaultLayout: 'main',
-	extname: '.handlebars',
-  }));
-  app.set('view engine', 'handlebars');
-  app.set('views', path.join("public/views"));
+
+app.engine("handlebars", exphbs())
+
+app.set("view engine", "handlebars");
+app.set("views", "src/public/views");
 
 
 const productos =[
@@ -141,7 +139,7 @@ app.get('/', (req, res) => {
 	});
   });
   
-  const PORT = process.env.PORT || 3000;
-  server.listen(PORT, () => {
-	console.log(`Servidor escuchando en el puerto ${PORT}`);
-  });
+//   const PORT = process.env.PORT || 3000;
+//   server.listen(PORT, () => {
+// 	console.log(`Servidor escuchando en el puerto ${PORT}`);
+//   });
