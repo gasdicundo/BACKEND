@@ -1,6 +1,4 @@
-{{>layouts/main}}
 
-{{#contentFor "body"}}
     <h2>Lista de Productos en Tiempo Real</h2>
     <ul id="productos-lista">
 
@@ -49,5 +47,5 @@
             socket.emit('nuevoProducto', { title: titulo, price: precio });
         });
     </script>
-{{/contentFor}}
+
 
