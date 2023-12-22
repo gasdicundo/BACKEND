@@ -6,6 +6,16 @@
 
     </ul>
 
+    <form id="formulario-producto">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required>
+
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" name="precio" required>
+
+        <button type="submit">Agregar Producto</button>
+    </form>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 
     <script>
@@ -26,5 +36,18 @@
         socket.on('productos', productos => {
             actualizarListaProductos(productos);
         });
+
+        const formularioProducto = document.getElementById('formulario-producto');
+
+        formularioProducto.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const titulo = document.getElementById('titulo').value;
+            const precio = document.getElementById('precio').value;
+
+            // Envía los datos del nuevo producto al servidor a través de Socket.IO
+            socket.emit('nuevoProducto', { title: titulo, price: precio });
+        });
     </script>
 {{/contentFor}}
+

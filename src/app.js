@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-// Configuración de Handlebars
+
 app.engine('handlebars', exphbs({
   layoutsDir: path.join(__dirname, 'views', 'layouts'),
   defaultLayout: 'main',
@@ -120,17 +120,27 @@ app.get('/', (req, res) => {
 	res.render('realtimeproducts', { title: 'Productos en Tiempo Real', productos });
   });
   
-  // WebSocket
+
   io.on('connection', (socket) => {
 	console.log('Cliente conectado');
+  
+
 	io.emit('productos', productos);
   
+
+	socket.on('nuevoProducto', (nuevoProducto) => {
+	  productos.push(nuevoProducto);
+  
+
+	  io.emit('productos', productos);
+	});
+  
+
 	socket.on('disconnect', () => {
 	  console.log('Cliente desconectado');
 	});
   });
   
-  // Servidor
   const PORT = process.env.PORT || 3000;
   server.listen(PORT, () => {
 	console.log(`Servidor escuchando en el puerto ${PORT}`);
