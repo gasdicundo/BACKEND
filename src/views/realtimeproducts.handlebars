@@ -1,4 +1,4 @@
-{{> layouts/main}}
+{{>layouts/main}}
 
 {{#contentFor "body"}}
     <h2>Lista de Productos en Tiempo Real</h2>
@@ -45,7 +45,7 @@
             const titulo = document.getElementById('titulo').value;
             const precio = document.getElementById('precio').value;
 
-            // Envía los datos del nuevo producto al servidor a través de Socket.IO
+            
             socket.emit('nuevoProducto', { title: titulo, price: precio });
         });
     </script>

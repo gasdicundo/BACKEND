@@ -10,14 +10,14 @@ const io = socketIO(server);
 
 
 app.engine('handlebars', exphbs({
-  layoutsDir: path.join(__dirname, 'views', 'layouts'),
-  defaultLayout: 'main',
-  extname: '.handlebars',
-}));
-app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'views'));
+	layoutsDir: path.join(__dirname, 'views', 'layouts'),
+	defaultLayout: 'main',
+	extname: '.handlebars',
+  }));
+  app.set('view engine', 'handlebars');
+  app.set('views', path.join(__dirname, 'views'));
 
-// Rutas
+
 const productos =[
     {
         "id": 1,
