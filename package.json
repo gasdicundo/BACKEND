@@ -12,8 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "express-handlebars": "^5.3.3",
+    "mongobase": "^1.0.6",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.0.4",
     "socket.io": "^4.7.2"
   }
 }

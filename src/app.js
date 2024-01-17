@@ -1,145 +1,58 @@
-const express = require('express');
-const socketIO = require('socket.io');
-const exphbs = require('express-handlebars');
-const path = require('path');
+const express = require('express')
+const router = require('./router/router')
+const { port } = require('./configs/server.config')
+const { Server } = require("socket.io")
+const handlebars = require('express-handlebars')
+const mongoConnect = require('./db')
+const chats = []
 
-const app = express();
-const server = app.listen(3000, () => {"Servidor escuchando en el puerto 3000"});
-const io = socketIO(server);
+const app = express()
 
-app.use(express.static("src/public"))
+// Configuración de Handlebars
+const hbs = handlebars.create({
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
+})
 
+app.use(express.json())
+app.use(express.static(process.cwd() + '/src/public'))
 
-app.engine("handlebars", exphbs())
+// Configura Express para servir archivos estáticos desde la carpeta 'node_modules/bootstrap/dist'
+app.use('/bootstrap', express.static(process.cwd() + '/node_modules/bootstrap/dist'))
 
-app.set("view engine", "handlebars");
-app.set("views", "src/public/views");
+app.engine('handlebars', hbs.engine)
+app.set('views', process.cwd() + '/src/views')
+app.set('view engine', 'handlebars')
 
+const httpServer = app.listen(port, () => {
+  console.log(`Server running at port ${port}`)
+})
 
-const productos =[
-    {
-        "id": 1,
-        "title": "producto prueba1",
-        "description": "Este es un producto prueba",
-        "price": 200,
-        "thumbnail": "sin imagen",
-        "code": "COD1",
-        "stock": 25
-    },
-    {
-        "id": 2,
-        "title": "producto prueba2",
-        "description": "Este es un producto prueba",
-        "price": 200,
-        "thumbnail": "sin imagen",
-        "code": "COD2",
-        "stock": 25
-    },
-    {
-		"id": 3,
-		"title": "producto prueba3",
-		"description": "Este es un producto prueba",
-		"price": 200,
-		"thumbnail": "sin imagen",
-		"code": "COD3",
-		"stock": 25
-	},
-	{
-		"id": 4,
-		"title": "producto prueba4",
-		"description": "Este es un producto prueba",
-		"price": 200,
-		"thumbnail": "sin imagen",
-		"code": "COD4",
-		"stock": 25
-	},
-	{
-		"id": 5,
-		"title": "producto prueba5",
-		"description": "Este es un producto prueba",
-		"price": 200,
-		"thumbnail": "sin imagen",
-		"code": "COD5",
-		"stock": 25
-	},
-	{
-		"id": 6,
-		"title": "producto prueba6",
-		"description": "Este es un producto prueba",
-		"price": 200,
-		"thumbnail": "sin imagen",
-		"code": "COD6",
-		"stock": 25
-	},
-	{
-		"id": 7,
-		"title": "producto prueba7",
-		"description": "Este es un producto prueba",
-		"price": 200,
-		"thumbnail": "sin imagen",
-		"code": "COD7",
-		"stock": 25
-	},
-	{
-		"id": 8,
-		"title": "producto prueba8",
-		"description": "Este es un producto prueba",
-		"price": 200,
-		"thumbnail": "sin imagen",
-		"code": "COD8",
-		"stock": 25
-	},
-	{
-		"id": 9,
-		"title": "producto prueba9",
-		"description": "Este es un producto prueba",
-		"price": 200,
-		"thumbnail": "sin imagen",
-		"code": "COD9",
-		"stock": 25
-	},
-	{
-		"id": 10,
-		"title": "producto prueba10",
-		"description": "Este es un producto prueba",
-		"price": 200,
-		"thumbnail": "sin imagen",
-		"code": "COD10",
-		"stock": 25
-	}
-];
+const io = new Server(httpServer);
+
+io.on ('connection', (socket) => {  
+  socket.on('newUser', data => {
+    socket.broadcast.emit ('userConnected', data)
+    socket.emit ('messageLogs', chats)
+    
+  })
+  socket.on ('message', data => {
+    chats.push(data) //aca guardo la data en un array
+    io.emit ('messageLogs', chats) 
+})
+})
 
 
-app.get('/', (req, res) => {
-	res.render('index', { title: 'Inicio', productos });
-  });
-  
-  app.get('/realtimeproducts', (req, res) => {
-	res.render('realtimeproducts', { title: 'Productos en Tiempo Real', productos });
-  });
-  
+app.locals.io = io
 
-  io.on('connection', (socket) => {
-	console.log('Cliente conectado');
-  
 
-	io.emit('productos', productos);
-  
+mongoConnect()
 
-	socket.on('nuevoProducto', (nuevoProducto) => {
-	  productos.push(nuevoProducto);
-  
+router(app)
 
-	  io.emit('productos', productos);
-	});
-  
 
-	socket.on('disconnect', () => {
-	  console.log('Cliente desconectado');
-	});
-  });
-  
-//   const PORT = process.env.PORT || 3000;
-//   server.listen(PORT, () => {
-// 	console.log(`Servidor escuchando en el puerto ${PORT}`);
-//   });
+
+
+
