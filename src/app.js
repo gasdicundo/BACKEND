@@ -8,7 +8,7 @@ const chats = []
 
 const app = express()
 
-// Configuración de Handlebars
+
 const hbs = handlebars.create({
   runtimeOptions: {
     allowProtoPropertiesByDefault: true,
@@ -19,7 +19,7 @@ const hbs = handlebars.create({
 app.use(express.json())
 app.use(express.static(process.cwd() + '/src/public'))
 
-// Configura Express para servir archivos estáticos desde la carpeta 'node_modules/bootstrap/dist'
+
 app.use('/bootstrap', express.static(process.cwd() + '/node_modules/bootstrap/dist'))
 
 app.engine('handlebars', hbs.engine)
@@ -39,7 +39,7 @@ io.on ('connection', (socket) => {
     
   })
   socket.on ('message', data => {
-    chats.push(data) //aca guardo la data en un array
+    chats.push(data) 
     io.emit ('messageLogs', chats) 
 })
 })
