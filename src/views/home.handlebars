@@ -16,10 +16,18 @@
                     </p>
                 </div>
                 <button to={`/item/${{id}}`} class="btn btn2">
-                    Ver detalle
+                    Agregar al Carrito
                 </button> 
             </div>
         {{/each}}
+        </div>
+        <div class="botonesPage">
+        {{#if hasPrevPage}}
+            <a href="products?page={{prevPage}}{{#if sort}}&sort={{sort}}{{/if}}{{#if limit}}&limit={{limit}}{{/if}}"><button class="btn btn2">Anterior</button></a>
+        {{/if}}
+        {{#if hasNextPage}}
+            <a href="products?page={{nextPage}}{{#if sort}}&sort={{sort}}{{/if}}{{#if limit}}&limit={{limit}}{{/if}}"><button class="btn btn2">Siguiente</button></a>
+        {{/if}}
         </div>
     </section>
 </main>

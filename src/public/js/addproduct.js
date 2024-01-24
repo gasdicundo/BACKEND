@@ -1,5 +1,5 @@
 function submitForm() {
-    // Recopila los datos del formulario en un objeto
+
     const formData = {
         title: document.getElementById('title').value,
         description: document.getElementById('description').value,
@@ -10,7 +10,6 @@ function submitForm() {
         stock: document.getElementById('stock').value,
     }
 
-    // Realiza una solicitud POST utilizando fetch y envía los datos en formato JSON
     fetch('/api/products', {
         method: 'POST',
         headers: {
@@ -21,9 +20,9 @@ function submitForm() {
     .then(response => response.json())
     .then(data => {
         console.log(data)
-          // Limpia el formulario
+      
           document.getElementById('productForm').reset()
-          // Muestra un mensaje de alerta
+          
           alert('Producto creado correctamente')  
     })
     .catch(error => console.error('Error:', error))

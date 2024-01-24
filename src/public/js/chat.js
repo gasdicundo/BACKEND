@@ -8,7 +8,7 @@ const getUsername = async () => {
     try {
         const username = await Swal.fire({
             title: 'Bienvenido al Chat',
-            text: 'Ingresa tu nombre de usuario para identificarte',
+            text: 'Ingresa nombre de usuario',
             input: 'text',
             showClass: {
                 popup: 'animate__animated animate__fadeInDown'
@@ -33,7 +33,7 @@ const getUsername = async () => {
               
               Toast.fire({
                 icon: 'success',
-                title: `Se acaba de conectar ${user.user}`,
+                title: `Inicio sesión: ${user.user}`,
               })
           })
 
@@ -42,7 +42,7 @@ const getUsername = async () => {
                 const data = {
                     user: username.value,
                     message: chatBox.value,
-                } //aca guardo el valor de todo lo que escribi en el input en un objeto
+                } 
                 chatBox.value = ''
                 socket.emit('message', data)
                 console.log (data)
