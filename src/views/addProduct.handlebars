@@ -1,6 +1,6 @@
 <section>
     <h1 class="tituloNewProduct">Ingrese el nuevo producto</h1>
-    <form id="productForm" class="formulario" onsubmit="submitForm(); return false;">
+    <form id="productForm" action="localhost:3000/api/products" method="post" class="formulario" onsubmit="submitForm(); return false;">
         <div class="mb-1"> 
         <label for="title" class="form-label">Titulo</label>
         <input type="text" class="form-control" name="title" id="title" required>
